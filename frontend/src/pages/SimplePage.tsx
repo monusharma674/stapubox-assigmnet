@@ -1,0 +1,1 @@
+export function SimplePage({title,body}:{title:string;body:string}){return <div className="mx-auto max-w-5xl p-4 md:p-7"><h1 className="text-3xl font-black">{title}</h1><div className="glass mt-6 rounded-3xl p-6 text-slate-300">{body}</div></div>}
