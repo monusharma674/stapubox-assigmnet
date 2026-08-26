@@ -1,4 +1,4 @@
-﻿import { useState } from "react"
+import { useState } from "react"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { Database, Search, Plus, ExternalLink, Sparkles, CheckCircle2, AlertCircle } from "lucide-react"
 import { api } from "../lib/api"
@@ -35,7 +35,7 @@ export function KnowledgePage() {
           }
         ])
       }),
-    onSuccess: data => {
+    onSuccess: (data: { ingested: number }) => {
       setIngestStatus(`Successfully ingested ${data.ingested} factual record into ChromaDB knowledge base.`)
       setFactText("")
       setSourceUrl("")

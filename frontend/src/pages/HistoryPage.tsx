@@ -55,7 +55,7 @@ export function HistoryPage({ saved = false }: { saved?: boolean }) {
   }
 
   function handleExport(format: 'json' | 'csv') {
-    const ids = questions.map(q => q.id).join(",")
+    const ids = questions.map((q: Question) => q.id).join(",")
     window.open(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/export?format=${format}&ids=${ids}`, '_blank')
   }
 
@@ -207,7 +207,7 @@ export function HistoryPage({ saved = false }: { saved?: boolean }) {
       {/* Grid of Questions */}
       {questions.length > 0 ? (
         <div className="grid gap-6 xl:grid-cols-2">
-          {questions.map(q => (
+          {questions.map((q: Question) => (
             <QuestionCard
               key={q.id}
               q={q}

@@ -11,7 +11,7 @@ export function Header() {
 
   useEffect(() => {
     api<{ ai: { status: string; message: string } }>('/health')
-      .then(x => setStatus(x.ai))
+      .then((x: { ai: { status: string; message: string } }) => setStatus(x.ai))
       .catch(() => setStatus({ status: 'error', message: 'Backend unavailable' }))
   }, [])
 
