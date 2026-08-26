@@ -351,6 +351,39 @@ export function handleFallbackApi(path: string, init?: RequestInit): any {
     return { saved: true }
   }
 
+  const regenMatch = pathname.match(/^\/questions\/(\d+)\/regenerate$/)
+  if (regenMatch && method === "POST") {
+    const qId = Number(regenMatch[1])
+    const questions = getStoredQuestions()
+    const target = questions.find(item => item.id === qId)
+    const sport = target?.sport || "Cricket"
+    const bank = sportsKnowledgeBank[sport] || sportsKnowledgeBank["Cricket"]
+    const nextTemplate = bank[Math.floor(Math.random() * bank.length)]
+    const newQ: Question = {
+      id: Date.now(),
+      batch_id: target?.batch_id || Date.now(),
+      sport,
+      difficulty: target?.difficulty || "Medium",
+      era: target?.era || "Historical",
+      type: nextTemplate.type,
+      prompt: nextTemplate.prompt,
+      options: nextTemplate.options,
+      correct_answer: nextTemplate.correct_answer,
+      explanation: nextTemplate.explanation,
+      opinion_based: nextTemplate.type === "poll",
+      confidence_score: 0.95,
+      quality_score: 0.9,
+      fact_check_status: nextTemplate.type === "poll" ? "opinion" : "verified",
+      semantic_duplicate_score: 0,
+      saved: false,
+      created_at: new Date().toISOString(),
+      sources: nextTemplate.sources
+    }
+    const updated = questions.map(item => item.id === qId ? newQ : item)
+    saveStoredQuestions(updated)
+    return newQ
+  }
+
   const deleteQMatch = pathname.match(/^\/questions\/(\d+)$/)
   if (deleteQMatch && method === "DELETE") {
     const qId = Number(deleteQMatch[1])
